@@ -12,19 +12,20 @@ import java.util.Stack;
  */
 public class PegSolve {
 
-	private static int[][] validMoves = {{},{4,6},
-		                                {7,9},{8,10},
-		                      {1,6,11,13},{12,14},{1,4,13,15},
-		                         {2,9},{3,10},{2,7},{3,8},
-		                  {4,13},{5,14},{4,6,11,15},{5,12},{6,13}};
+	private static int[][] validMoves = {{},
+			{4,6},
+			{7,9},{8,10},
+			{1,6,11,13},{12,14},{1,4,13,15},
+			{2,9},{3,10},{2,7},{3,8},
+			{4,13},{5,14},{4,6,11,15},{5,12},{6,13}};
 	private static int [] pegs = new int[16];
 	private static int [] starts = {1,2,4,5};
 	private static Stack<Integer> moveFrom = new Stack<Integer>();
 	private static Stack<Integer> moveTo = new Stack<Integer>();
 	private static int depth = 0;
 	private static int solutions = 0;
-	
-	
+
+
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 		for (int start: starts){
@@ -32,7 +33,7 @@ public class PegSolve {
 			setUp(start);
 			printBoard();
 			solve();
-			System.out.println(solutions + " solutions in " + (System.currentTimeMillis() - startTime) + "ms");
+			System.out.println("Found " + solutions + " solutions in " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 
 	}
@@ -54,8 +55,7 @@ public class PegSolve {
 								if (solutions == 0) {
 									//System.out.println(Arrays.toString(pegs));
 									//printBoard();
-									System.out.println("From: " + moveFrom);
-									System.out.println("  To: " + moveTo);
+									System.out.println("Moves: " + movesToString(moveFrom.toArray(),moveTo.toArray()));
 								}
 								solutions++;
 							} else {
@@ -86,7 +86,18 @@ public class PegSolve {
 				"\n     " + pegs[4] + "  "+ pegs[5] + "  "+ pegs[6] + "\n    "
 				+ pegs[7] + "  "+ pegs[8] + "  "+ pegs[9] + " "+ pegs[10] + "\n  "
 				+ pegs[11] + " "+ pegs[12] + " "+ pegs[13] + " "+ pegs[14] + " "+ pegs[15]);
-		
+
+	}
+
+	private static String movesToString(Object[] from, Object[] to ) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i< from.length; i++) {
+			if (i>0) {
+				sb.append(", ");
+			}
+			sb.append(from[i]).append('-').append(to[i]);
+		}
+		return sb.toString();
 	}
 
 	private static void undoMove(int from, Integer to, int remove, int remVal) {
@@ -132,6 +143,4 @@ public class PegSolve {
 			pegs[i]= (i == start? 0 : i);
 		}
 	}
-
-	
 }
